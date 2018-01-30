@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.EmpMapper" >
+
+
+    <sql id="Base_Column_List" >
+        id, name, email, address,sex,telphone
+    </sql>
+
+    <select id="findEmps"  resultType="hashmap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM emp
+    </select>
+
+
+
+    <select id="findCustomers"  resultType="hashmap" >
+        SELECT
+        *
+        FROM customer
+    </select>
+
+
+    <select id="findPageCustomers"  resultType="hashmap" >
+        SELECT
+        *
+        FROM customer where 1=1
+
+            <if test="name!=null and  name!=''">
+
+                and name like CONCAT('%',#{name},'%' )
+
+            </if>
+            <if test="age!=null and  age!=''">
+
+                and age > #{age}
+            </if>
+            order by id desc limit #{start},#{end}
+
+
+
+
+    </select>
+
+
+
+
+</mapper>

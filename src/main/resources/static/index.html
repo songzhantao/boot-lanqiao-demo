@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- 引入Vue -->
+    <script src="//vuejs.org/js/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+    <!-- 引入组件库 -->
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+</head>
+<body>
+
+<div id="app">
+
+
+    <Card style="width:80%">
+        <p slot="title">
+            <Icon type="ios-film-outline"></Icon>
+            SpringBoot Query
+        </p>
+
+        <div>
+
+            <div>
+                <i-input v-model="value1" placeholder="姓名"></i-input>
+
+            </div>
+
+
+
+            <br/>
+
+            <div>
+
+                <Input-number :max="100" :min="1" v-model="value2"></Input-number>
+            </div>
+
+            <br/>
+            <i-button @click="show">查询!</i-button>
+            <br/>
+            <Page :total="100" @on-change="change"></Page>
+            <br/>
+                     <i-table border :columns="columns1" :data="data1"></i-table>
+
+
+
+        </div>
+    </Card>
+
+
+
+
+
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            value1:'',
+            value2:25,
+            p:1,
+            columns1: [
+                {
+                    title: '序号',
+                    key: 'id'
+                },
+                {
+                    title: '姓名',
+                    key: 'name'
+                },
+                {
+                    title: '性别',
+                    key: 'sex'
+                },
+
+                {
+                    title: '专业',
+                    key: 'major'
+                },
+
+
+                {
+                    title: '年龄',
+                    key: 'age'
+                }
+            ],
+            data1: [
+                {
+                    id: '18',
+                    name: '数据',
+                    sex: '男',
+                    major:'数学',
+                    age:20
+                }
+            ]
+
+
+        },
+        methods: {
+            show: function () {
+                var  pv=this.p;
+                var  vv=this.value1;
+                var  vvv=this.value2;
+                console.log("page:"+this.p);
+                console.log("name:"+this.value1);
+                console.log("age:"+this.value2);
+
+
+                this.$http.get('/boot/alls/page',{params:{"name": vv, "age": vvv,"page":pv}}).then(function(res){
+                    this.data1=res.data;
+
+                },function (res) {
+                    alert(res.status);
+                });
+            },
+            change:function(page){
+
+                this.p=page;
+                this.show();
+            }
+
+
+        }
+    })
+</script>
+</body>
+</html>
